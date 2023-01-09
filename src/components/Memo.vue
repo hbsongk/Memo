@@ -1,22 +1,50 @@
 <template>
   <div class="memo">
+    <div class="act">
+      <button class="btn btn-primary" @click="add()">+ 추가</button>
+    </div>
     <ul>
-      <li>메모 1 내용</li>
-      <li>메모 2 내용</li>
-      <li>메모 3 내용</li>
-      <li>메모 4 내용</li>
-      <li>메모 5 내용</li>
+      <li v-for="(d, idx) in state.data" :key="idx">{{ d }}</li>
     </ul>
   </div>
 </template>
+
 <script>
-export default {};
+import { reactive } from "vue";
+import axios from "axios";
+export default {
+  setup() {
+    const state = reactive({
+      data: [],
+    });
+    const add = () => {
+      state.data.push("추가된 메모 내용");
+    };
+    axios.get("http://localhost:3000/memos").then((res) => {
+      console.log(res);
+    });
+    return { state, add };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.memo ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.memo {
+  .act {
+    padding: 10px 10px 5px 5px;
+    text-align: right;
+    border-top: 1px solid #eee;
+  }
+  ul {
+    list-style: none;
+    padding: 15px 0;
+    margin: 0;
+
+    li {
+      padding: 15px;
+      margin: 5px;
+      border: 1px solid #eee;
+    }
+  }
 }
 </style>
